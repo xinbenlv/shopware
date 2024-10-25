@@ -2,10 +2,13 @@
 
 namespace Shopware\Core\Framework\Test;
 
+use Shopware\Core\Framework\Feature;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Uuid\Uuid;
 
 /**
+ * @deprecated tag:v6.7.0 - Will be replaced by public Shopware\Core\Test\Stub\Framework\IdsCollection in v6.7.0
+ *
  * @internal
  */
 #[Package('core')]
@@ -21,6 +24,7 @@ class IdsCollection
      */
     public function __construct(array $ids = [])
     {
+        Feature::triggerDeprecationOrThrow('v6.7.0.0', 'Will be replaced by public Shopware\Core\Test\Stub\Framework\IdsCollection.');
         $this->ids = $ids;
     }
 
