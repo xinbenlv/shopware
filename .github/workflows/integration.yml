@@ -13,13 +13,24 @@ jobs:
       matrix:
         project:
           - name: Platform
+            major: false
           - name: Install
+            major: false
+          - name: Platform
+            major: true
     env:
       SHOPWARE_HTTP_CACHE_ENABLED: 0
       SHOPWARE_DISABLE_UPDATE_CHECK: "true"
       BLUE_GREEN_DEPLOYMENT: 1
       COMPOSER_ROOT_VERSION: 6.6.9999999-dev
     steps:
+      - name: Define environment for major testing
+        shell: bash
+        run: |
+          echo "V6_7_0_0=1" >> $GITHUB_ENV
+          echo "DISABLE_VUE_COMPAT=0" >> $GITHUB_ENV
+        if: ${{ matrix.project.major }}
+
       - name: Setup Shopware
         uses: shopware/setup-shopware@main
         with:
