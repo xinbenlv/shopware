@@ -24,7 +24,7 @@ class Storefront extends Bundle implements ThemeInterface
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
-        parent::buildDefaultConfig($container);
+        $this->buildDefaultConfig($container);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/DependencyInjection'));
         $loader->load('services.xml');
