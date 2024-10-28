@@ -20,19 +20,23 @@ class ServiceRegistryClientTest extends TestCase
     {
         yield 'not-json' => [''];
 
-        yield 'not-correct-list' => [json_encode([1, 2, 3])];
+        yield 'no-services-key' => [json_encode(['blah' => [1, 2, 3]])];
 
-        yield 'not-correct-service-definition' => [json_encode([['not-valid' => 1]])];
+        yield 'not-correct-list' => [json_encode(['services' => [1, 2, 3]])];
 
-        yield 'missing-label' => [json_encode([['name' => 'SomeService']])];
+        yield 'not-correct-service-definition' => [json_encode(['services' => [['not-valid' => 1]]])];
 
-        yield 'missing-host' => [json_encode([['name' => 'SomeService', 'label' => 'SomeService']])];
+        yield 'missing-label' => [json_encode(['services' => [['name' => 'SomeService']]])];
 
-        yield 'missing-app-endpoint' => [json_encode([['name' => 'SomeService', 'label' => 'SomeService', 'host' => 'https://www.someservice.com']])];
+        yield 'missing-host' => [json_encode(['services' => [['name' => 'SomeService', 'label' => 'SomeService']]])];
+
+        yield 'missing-app-endpoint' => [json_encode(['services' => [['name' => 'SomeService', 'label' => 'SomeService', 'host' => 'https://www.someservice.com']]])];
 
         yield '1-valid-1-invalid' => [json_encode([
-            ['name' => 'SomeService', 'label' => 'SomeService', 'host' => 'https://www.someservice.com', 'app-endpoint' => '/register'],
-            ['not-valid' => 1],
+            'services' => [
+                ['name' => 'SomeService', 'label' => 'SomeService', 'host' => 'https://www.someservice.com', 'app-endpoint' => '/register'],
+                ['not-valid' => 1],
+            ],
         ])];
     }
 
@@ -64,8 +68,10 @@ class ServiceRegistryClientTest extends TestCase
     public function testSuccessfulRequestReturnsListOfServices(): void
     {
         $service = [
-            ['name' => 'MyCoolService1', 'host' => 'https://coolservice1.com', 'label' => 'My Cool Service 1', 'app-endpoint' => '/app-endpoint'],
-            ['name' => 'MyCoolService2', 'host' => 'https://coolservice2.com', 'label' => 'My Cool Service 2', 'app-endpoint' => '/app-endpoint', 'license-sync-endpoint' => '/license-sync-endpoint'],
+            'services' => [
+                ['name' => 'MyCoolService1', 'host' => 'https://coolservice1.com', 'label' => 'My Cool Service 1', 'app-endpoint' => '/app-endpoint'],
+                ['name' => 'MyCoolService2', 'host' => 'https://coolservice2.com', 'label' => 'My Cool Service 2', 'app-endpoint' => '/app-endpoint', 'license-sync-endpoint' => '/license-sync-endpoint'],
+            ],
         ];
 
         $client = new MockHttpClient([
@@ -94,8 +100,10 @@ class ServiceRegistryClientTest extends TestCase
     public function testServicesAreFetchedAndCached(): void
     {
         $service = [
-            ['name' => 'MyCoolService1', 'host' => 'https://coolservice1.com', 'label' => 'My Cool Service 1', 'app-endpoint' => '/app-endpoint'],
-            ['name' => 'MyCoolService2', 'host' => 'https://coolservice2.com', 'label' => 'My Cool Service 2', 'app-endpoint' => '/app-endpoint'],
+            'services' => [
+                ['name' => 'MyCoolService1', 'host' => 'https://coolservice1.com', 'label' => 'My Cool Service 1', 'app-endpoint' => '/app-endpoint'],
+                ['name' => 'MyCoolService2', 'host' => 'https://coolservice2.com', 'label' => 'My Cool Service 2', 'app-endpoint' => '/app-endpoint'],
+            ],
         ];
 
         $client = new MockHttpClient([
@@ -118,14 +126,18 @@ class ServiceRegistryClientTest extends TestCase
     public function testResetCausesRefetch(): void
     {
         $services1 = [
-            ['name' => 'MyCoolService1', 'host' => 'https://coolservice1.com', 'label' => 'My Cool Service 1', 'app-endpoint' => '/app-endpoint'],
-            ['name' => 'MyCoolService2', 'host' => 'https://coolservice2.com', 'label' => 'My Cool Service 2', 'app-endpoint' => '/app-endpoint'],
+            'services' => [
+                ['name' => 'MyCoolService1', 'host' => 'https://coolservice1.com', 'label' => 'My Cool Service 1', 'app-endpoint' => '/app-endpoint'],
+                ['name' => 'MyCoolService2', 'host' => 'https://coolservice2.com', 'label' => 'My Cool Service 2', 'app-endpoint' => '/app-endpoint'],
+            ],
         ];
 
         $services2 = [
-            ['name' => 'MyCoolService1', 'host' => 'https://coolservice1.com', 'label' => 'My Cool Service 1', 'app-endpoint' => '/app-endpoint'],
-            ['name' => 'MyCoolService2', 'host' => 'https://coolservice2.com', 'label' => 'My Cool Service 2', 'app-endpoint' => '/app-endpoint'],
-            ['name' => 'MyCoolService3', 'host' => 'https://coolservice3.com', 'label' => 'My Cool Service 3', 'app-endpoint' => '/app-endpoint'],
+            'services' => [
+                ['name' => 'MyCoolService1', 'host' => 'https://coolservice1.com', 'label' => 'My Cool Service 1', 'app-endpoint' => '/app-endpoint'],
+                ['name' => 'MyCoolService2', 'host' => 'https://coolservice2.com', 'label' => 'My Cool Service 2', 'app-endpoint' => '/app-endpoint'],
+                ['name' => 'MyCoolService3', 'host' => 'https://coolservice3.com', 'label' => 'My Cool Service 3', 'app-endpoint' => '/app-endpoint'],
+            ],
         ];
 
         $client = new MockHttpClient([
