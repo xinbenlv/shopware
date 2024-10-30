@@ -1,4 +1,4 @@
-import { test, expect } from '@fixtures/AcceptanceTest';
+import { test, expect } from '@playwright/test';
 
 test('Install a new Shopware instance.', { tag: '@Install' }, async ({ page }) => {
     await page.goto(process.env.APP_URL);
