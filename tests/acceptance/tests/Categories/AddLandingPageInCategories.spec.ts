@@ -1,4 +1,4 @@
-import {test} from '@fixtures/AcceptanceTest';
+import { test } from '@fixtures/AcceptanceTest';
 import { expect } from '@playwright/test';
 
 test('Shop administrator should be able to create a landing page.', {tag: '@Categories'}, async ({
