@@ -342,6 +342,9 @@ $sw-asset-theme-url: \'http://localhost\';
 
 \$theme-id: themeId;
 \$sw-zero-margin: 0;
+\$sw-null-margin: 0;
+\$sw-unset-margin: 0;
+\$sw-empty-margin: 0;
 \$sw-asset-theme-url: 'http://localhost';
 
 PHP_EOL;
